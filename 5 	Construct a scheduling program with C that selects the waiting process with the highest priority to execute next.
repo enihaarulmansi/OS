@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Process {
+    int id;
+    int priority;
+} Process;
+
+void scheduleProcess(Process processes[], int n) {
+    int highestPriorityIndex = 0;
+
+    for (int i = 1; i < n; i++) {
+        if (processes[i].priority > processes[highestPriorityIndex].priority) {
+            highestPriorityIndex = i;
+        }
+    }
+
+    printf("Executing Process ID: %d with Priority: %d\n", 
+           processes[highestPriorityIndex].id, 
+           processes[highestPriorityIndex].priority);
+}
+
+int main() {
+    Process processes[] = {
+        {1, 3},
+        {2, 5},
+        {3, 1},
+        {4, 4}
+    };
+    int n = sizeof(processes) / sizeof(processes[0]);
+
+    scheduleProcess(processes, n);
+    return 0;
+}
