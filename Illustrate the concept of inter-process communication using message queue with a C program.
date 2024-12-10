@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <unistd.h>
+
+#define MAX_TEXT 512
+
+struct message {
+    long msg_type;
+    char text[MAX_TEXT];
+};
+
+int main() {
+    key_t key = ftok("progfile", 65); 
+    int msgid = msgget(key, 0666 | IPC_CREAT); 
+
+    struct message msg;
+    msg.msg_type = 1; 
+
+    
+    printf("Write Message: ");
+    fgets(msg.text, MAX_TEXT, stdin);
+    msgsnd(msgid, &msg, sizeof(msg), 0); 
+
+    
+    msgrcv(msgid, &msg, sizeof(msg), 1, 0); 
+    printf("Data Received: %s\n", msg.text);
+
+    msgctl(msgid, IPC_RMID, NULL); 
+    return 0;
+}
