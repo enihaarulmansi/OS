@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void createDirectory(const char *dirName) {
+    #ifdef _WIN32
+        _mkdir(dirName);
+    #else
+        mkdir(dirName, 0755);
+    #endif
+}
+
+int main() {
+    const char *mainDir = "MainDirectory";
+    const char *subDir1 = "MainDirectory/SubDirectory1";
+    const char *subDir2 = "MainDirectory/SubDirectory2";
+
+    createDirectory(mainDir);
+    createDirectory(subDir1);
+    createDirectory(subDir2);
+
+    printf("Directories created successfully.\n");
+    return 0;
+}
